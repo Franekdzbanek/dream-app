@@ -1,18 +1,63 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import fire from './config/fire';
 import './App.css';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import firebase from 'firebase';
 
 class App extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      user: null,
+    }
+  }
+
+state = { isSignedIn: false}
+uiConfig = {
+  signInFlow: 'popup',
+  signInOptions:[
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.EmailAuthProvider.PROVIDER_ID
+  ],
+  signInSuccessUrl: '/',
+  callbacks: {
+    signInSuccesss: () => false
+  }
+}
+
+  componentDidMount(){
+    this.authListener();
+  }
+
+  authListener(){
+    fire.auth().onAuthStateChanged((user) =>{
+      if(user){
+        this.setState({ user});
+      } else {
+        this.setState({user: null});
+      }
+    })
+  }
+
+  signOut() {
+    fire.auth().signOut();
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        { this.state.user ? (
+          <div>
+            <div>{this.state.user.displayName} jesteś zalogowany</div>
+            <button onClick={this.signOut}>Sign out</button>
+          </div>
+        ) : (
+          <StyledFirebaseAuth
+          uiConfig={this.uiConfig}
+          firebaseAuth={firebase.auth()}
+          />
+        )}
       </div>
     );
   }
