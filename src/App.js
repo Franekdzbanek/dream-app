@@ -3,6 +3,7 @@ import fire from './config/fire';
 import './App.css';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase';
+import Posts from './Posts.js';
 
 class App extends Component {
 
@@ -50,6 +51,7 @@ uiConfig = {
         { this.state.user ? (
           <div>
             <div>{this.state.user.displayName} jesteś zalogowany</div>
+            <Posts/>
             <button onClick={this.signOut}>Sign out</button>
           </div>
         ) : (
