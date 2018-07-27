@@ -40,7 +40,7 @@ class Posts extends Component {
   }
 
   removePost(id) {
-    console.log(id);
+    firebase.database().ref('posts/' + id).set(null);
   }
 
   render() {
@@ -48,7 +48,7 @@ class Posts extends Component {
       <div className="posts">
         <div className="post-list">
           {this.state.posts.map((post) => {
-            return <Post key={post.id} title={post.title} content={post.content} removePost={this.removePost.bind(this)}/>
+            return <Post key={post.id} id={post.id} title={post.title} content={post.content} removePost={this.removePost.bind(this)}/>
           })}
         </div>
         <div className="post-create">
