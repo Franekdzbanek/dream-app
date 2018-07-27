@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import firebase from './config/fire';
 import './Posts.css';
+import Post from './Post.js';
 
 class Posts extends Component {
   constructor(props){
@@ -39,6 +40,7 @@ class Posts extends Component {
   }
 
   removePost(id) {
+    console.log(id);
   }
 
   render() {
@@ -46,11 +48,7 @@ class Posts extends Component {
       <div className="posts">
         <div className="post-list">
           {this.state.posts.map((post) => {
-            return (<div key={post.id} className="post">
-              <div className="post-remove" onClick={this.removePost(post.id)}>X</div>
-              <div className="post-title">{post.title}</div>
-              <div className="post-content">{post.content}</div>
-            </div>)
+            return <Post key={post.id} title={post.title} content={post.content} removePost={this.removePost.bind(this)}/>
           })}
         </div>
         <div className="post-create">
